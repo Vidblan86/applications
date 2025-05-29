@@ -1,13 +1,14 @@
 name: Daily Job Search
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:    # manual trigger
   schedule:
-    - cron: '0 0 * * *'  # cada día a medianoche UTC
+    - cron: '0 0 * * *'  # every day at midnight UTC
 
 jobs:
   run-job-search:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -23,13 +24,11 @@ jobs:
                       requests beautifulsoup4 pandas
 
       - name: Create credentials file
-        # Asegúrate de que el Secret se llama exactamente GOOGLE_API_KEY
-        run: |
-          mkdir -p applications
-          echo "${{ secrets.GOOGLE_API_KEY }}" > ./credentials.json
+        # Replace SECRET_NAME with the name of your GitHub Actions secret
+        run: echo "${{ secrets.SECRET_NAME }}" > credentials.json
 
       - name: Run script
         env:
-          # Apunta al JSON que acabamos de escribir
+          # Point to the JSON just created
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/credentials.json
         run: python applications.py
