@@ -8,7 +8,6 @@ on:
 jobs:
   run-job-search:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -24,10 +23,14 @@ jobs:
                       requests beautifulsoup4 pandas
 
       - name: Create credentials file
-        run: echo "$GDRIVE_CREDENTIALS" > credentials.json
+        # Asegúrate de que el Secret se llama exactamente GOOGLE_API_KEY
+        run: |
+          mkdir -p applications
+          echo "${{ secrets.GOOGLE_API_KEY }}" > applications/credentials.json
 
       - name: Run script
+        working-directory: applications
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/credentials.json
+          # Apunta al JSON que acabamos de escribir
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/applications/credentials.json
         run: python applications.py
-
