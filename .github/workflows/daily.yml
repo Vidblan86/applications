@@ -1,7 +1,7 @@
 name: Daily Job Search
 
 on:
-  workflow_dispatch:    # <-- permite ejecución manual
+  workflow_dispatch:    # permite ejecución manual
   schedule:
     - cron: '0 0 * * *'  # cada día a medianoche UTC
 
@@ -10,13 +10,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-      - uses: actions/checkout@v3
-      - name: Mostrar encabezado de applications.py
-        run: sed -n '1,5p' applications.py
-        
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Debug: listar todos los archivos en el workspace
+        run: |
+          echo "=== Listado de archivos en el workspace ==="
+          ls -R .
+
+      - name: Debug: mostrar las primeras líneas de applications.py
+        run: sed -n '1,5p' applications.py
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -35,3 +38,4 @@ jobs:
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/credentials.json
         run: python applications.py
+
