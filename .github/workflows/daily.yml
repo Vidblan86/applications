@@ -1,6 +1,7 @@
 name: Daily Job Search
 
 on:
+  workflow_dispatch:    # <-- permite ejecución manual
   schedule:
     - cron: '0 0 * * *'  # cada día a medianoche UTC
 
