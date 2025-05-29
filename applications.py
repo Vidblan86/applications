@@ -1,5 +1,5 @@
 # Instalar dependencias (solo la primera vez)
-!pip install gspread oauth2client gspread-dataframe requests beautifulsoup4 pandas
+pip install gspread oauth2client gspread-dataframe requests beautifulsoup4 pandas
 
 # 1. Montar Google Drive
 from google.colab import drive
