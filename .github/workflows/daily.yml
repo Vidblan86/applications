@@ -25,7 +25,7 @@ jobs:
 
       - name: Create credentials file
         # Replace SECRET_NAME with the name of your GitHub Actions secret
-        run: echo "${{ secrets.SECRET_NAME }}" > credentials.json
+        run: echo "${{ GDRIVE_CREDENTIALS }}" > credentials.json
 
       - name: Run script
         env:
