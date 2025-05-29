@@ -1,0 +1,31 @@
+name: Daily Job Search
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # cada día a medianoche UTC
+
+jobs:
+  run-job-search:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install gspread oauth2client gspread-dataframe \
+                      requests beautifulsoup4 pandas
+
+      - name: Create credentials file
+        run: echo "$GDRIVE_CREDENTIALS" > credentials.json
+
+      - name: Run script
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/credentials.json
+        run: python applications.py
