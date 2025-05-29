@@ -35,6 +35,7 @@ jobs:
         run: echo "$GDRIVE_CREDENTIALS" > credentials.json
 
       - name: Run script
+        working-directory: applications
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/credentials.json
         run: python applications.py
