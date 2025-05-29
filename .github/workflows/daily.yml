@@ -29,7 +29,6 @@ jobs:
           echo "${{ secrets.GOOGLE_API_KEY }}" > applications/credentials.json
 
       - name: Run script
-        working-directory: applications
         env:
           # Apunta al JSON que acabamos de escribir
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/applications/credentials.json
