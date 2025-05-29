@@ -1,15 +1,15 @@
 name: Daily Job Search
 
 on:
-  workflow_dispatch:    # manual trigger
+  workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *'  # every day at midnight UTC
+    - cron: '0 0 * * *'
 
 jobs:
   run-job-search:
     runs-on: ubuntu-latest
-
     steps:
+
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -20,15 +20,19 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install gspread oauth2client gspread-dataframe \
-                      requests beautifulsoup4 pandas
+          pip install \
+            gspread oauth2client gspread-dataframe \
+            requests beautifulsoup4 pandas
 
       - name: Create credentials file
-        # Replace SECRET_NAME with the name of your GitHub Actions secret
-        run: echo "${{ GDRIVE_CREDENTIALS }}" > credentials.json
+        run: |
+          # This preserves the exact JSON (including newlines)
+          cat <<EOF > credentials.json
+          ${{ GDRIVE_CREDENTIALS }}
+          EOF
 
       - name: Run script
         env:
-          # Point to the JSON just created
+          # Let the Google client library pick it up
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/credentials.json
         run: python applications.py
