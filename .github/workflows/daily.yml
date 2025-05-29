@@ -10,6 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+      - uses: actions/checkout@v3
+      - name: Mostrar encabezado de applications.py
+        run: sed -n '1,5p' applications.py
+        
       - name: Checkout
         uses: actions/checkout@v3
 
