@@ -3,13 +3,13 @@ name: Daily Job Search
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 * * *'  # cada día a medianoche UTC
 
 jobs:
   run-job-search:
     runs-on: ubuntu-latest
-    steps:
 
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -26,13 +26,11 @@ jobs:
 
       - name: Create credentials file
         run: |
-          # This preserves the exact JSON (including newlines)
           cat <<EOF > credentials.json
-          ${{ GDRIVE_CREDENTIALS }}
-          EOF
+${{ secrets.GDRIVE_CREDENTIALS }}
+EOF
 
       - name: Run script
         env:
-          # Let the Google client library pick it up
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/credentials.json
         run: python applications.py
